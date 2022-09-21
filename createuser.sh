@@ -1,31 +1,44 @@
 #!/bin/bash
 
+declare -a folders=("/adm" "/ven" "/sec")
+declare -a groups=("GRP_ADM" "GRP_VEN" "GRP_SEC")
+
+declare -a users_adm=("carlos" "maria" "joao")
+declare -a users_ven=("debora" "sebastiana" "roberto")
+declare -a users_sec=("josefina" "amanda" "rogerio")
+
 echo "Creating foulders..."
 
 mkdir /publico
-mkdir /adm
-mkdir /ven
-mkdir /sec
 
-echo "Creating users groups..."
+for i in "${folders[@]}"
+do
+   mkdir "$i"
+done
 
-groupadd GRP_ADM
-groupadd GRP_VEN
-groupadd GRP_SEC
+echo "Creating groups..."
+
+for i in "${groups[@]}"
+do
+   groupadd "$i"
+done
 
 echo "Creating users and adding to your groups..."
 
-useradd carlos -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_ADM
-useradd maria -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_ADM
-useradd joao -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_ADM
+for i in "${users_adm[@]}"
+do
+   useradd "$i" -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_ADM
+done
 
-useradd debora -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_VEN
-useradd sebastiana -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_VEN
-useradd roberto -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_VEN
+for i in "${users_ven[@]}"
+do
+   useradd "$i" -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_ADM
+done
 
-useradd josefina -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_SEC
-useradd amanda -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_SEC
-useradd rogerio -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_SEC
+for i in "${users_sec[@]}"
+do
+   useradd "$i" -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_ADM
+done
 
 echo "Specifying permissions..."
 
@@ -33,9 +46,11 @@ chown root:GRP_ADM /adm
 chown root:GRP_VEN /ven
 chown root:GRP_SEC /sec
 
-chmod 770 /adm
-chmod 770 /ven
-chmod 770 /sec
 chmod 777 /publico
+
+for i in "${folders[@]}"
+do
+   chmod 770 "$i"
+done
 
 echo "Creating folders, groups and users completed..."
