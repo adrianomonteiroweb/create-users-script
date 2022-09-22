@@ -32,12 +32,12 @@ done
 
 for i in "${users_ven[@]}"
 do
-   useradd "$i" -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_ADM
+   useradd "$i" -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_VEN
 done
 
 for i in "${users_sec[@]}"
 do
-   useradd "$i" -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_ADM
+   useradd "$i" -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_SEC
 done
 
 echo "Specifying permissions..."
